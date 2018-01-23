@@ -7,10 +7,15 @@ import org.apache.spark.api.java.JavaSparkContext;
 
 import scala.Tuple2;
 
-public class FilterLine {
+/**
+ * 
+ * @author huangjiangnan 单词统计，需要打jar包到集群，然后shell提交任务到spark
+ */
+
+public class IpCount {
 
 	public static void main(String[] args) {
-		SparkConf conf = new SparkConf().setMaster("spark://192.168.7.202:7077").setAppName(FilterLine.class.getName());
+		SparkConf conf = new SparkConf().setMaster("spark://192.168.7.202:7077").setAppName(IpCount.class.getName());
 		JavaSparkContext sc = new JavaSparkContext(conf);
 		JavaRDD<String> inputRDD = sc.textFile("hdfs://192.168.7.202:900/test/nohup*").repartition(2);
 		// java lambda表达式 jdk8以上，省很多代码
