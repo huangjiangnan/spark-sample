@@ -29,14 +29,15 @@ public class CountWord implements Serializable{
 		//设置主主节点及端口
 		conf.setMaster("spark://192.168.7.202:7077");
 		//从集群yarn中复制配置文件yarn-site.xml，在hadoop/etc/hadoop/目录下面
-		conf.set("spark.yarn.dist.files", "D:\\scala-work\\spark\\src\\main\\resources\\yarn-site.xml");
+		conf.set("spark.yarn.dist.files", "D:\\scala-work\\spark-sample\\src\\main\\resources\\yarn-site.xml");
 		//设置本地要上传jar包，也就是本程序打的jar包，先打包后执行
-		String[] jars = { "D:\\scala-work\\spark\\target\\spark-0.0.1-SNAPSHOT.jar" };
+		String[] jars = { "D:\\scala-work\\spark-sample\\target\\spark-sample-0.0.1-SNAPSHOT.jar" };
 		conf.setJars(jars);
 		JavaSparkContext sc = new JavaSparkContext(conf);
 		// 从hadoop中hdfs读取输入数据
 		JavaRDD<String> input = sc.textFile("hdfs://192.168.7.202:900/test/sql.txt");
 		// 根据空格切分成单词
+		System.out.println(input.first());
 		JavaRDD<String> words = input.flatMap((String x) -> {
 			List<String> list = Arrays.asList(x.split(" "));
 			return list.iterator();
@@ -48,7 +49,7 @@ public class CountWord implements Serializable{
 			return v1 + v2;
 		});
 		// 将统计出来的单词存入一个文本文件
-		count.saveAsTextFile("hdfs://192.168.7.202:900/test/sql-spark6.txt");
+		count.saveAsTextFile("hdfs://192.168.7.202:900/test/sql-spark8.txt");
 		sc.close();
 	}
 
